@@ -201,12 +201,11 @@
             color: #666;
         }
 
-        /* Formatting with vertical gap (margin-top) */
         .sub-label {
             font-size: 0.65rem;
             opacity: 0.75;
             display: block;
-            margin-top: 4px; /* Added gap between title and sub-info */
+            margin-top: 4px;
             margin-bottom: 12px;
         }
 
@@ -269,7 +268,7 @@
         <div class="breakdown-box">
             <div class="breakdown-row">
                 <div>
-                    <span id="bottleSummary">Premium Bottles</span>
+                    <span id="bottleSummary">Premium 250ml Bottles</span>
                     <span class="sub-label">(Rs. 6/bottle)</span>
                 </div>
                 <span id="standardTotal"></span>
@@ -356,7 +355,8 @@
         let finalRevenue = finalBottles * finalPricePerBottle;
         let totalSavings = standardRevenue - finalRevenue;
 
-        document.getElementById('bottleSummary').innerText = `Premium ${finalBottles} Bottles`;
+        // Added 250ml here
+        document.getElementById('bottleSummary').innerText = `Premium 250ml ${finalBottles} Bottles`;
         document.getElementById('boxSummary').innerText = `Packaging: ${totalBoxes} Boxes`;
         document.getElementById('standardTotal').innerText = "Rs. " + standardRevenue.toLocaleString('en-IN');
         document.getElementById('outRate').innerText = finalPricePerBottle.toFixed(2);
@@ -403,7 +403,8 @@
         doc.setDrawColor(178, 148, 94).setLineWidth(0.5).line(40, 98, 170, 98);
 
         doc.setFont("times", "normal").setFontSize(11).setTextColor(26);
-        doc.text(`Premium ${finalBottles} Bottles`, 40, 110);
+        // Added 250ml here
+        doc.text(`Premium 250ml ${finalBottles} Bottles`, 40, 110);
         doc.text(`Rs. ${standardTotalVal.toLocaleString('en-IN')}`, 170, 110, { align: "right" });
         doc.setFontSize(9).setTextColor(150).text(`(Rs. 6/bottle)`, 40, 115);
         
@@ -450,7 +451,7 @@
 
         let message = `Hello PuraPersonal! %0A%0AI have reviewed the Lookbook and would like to order: %0A%0A` +
                       `• Capacity: ${guests} Guests %0A` +
-                      `• Quantity: ${finalBottles} Bottles %0A` +
+                      `• Quantity: ${finalBottles} Bottles (250ml) %0A` +
                       `• Packaging: ${totalBoxes} Boxes (42 per box) %0A` +
                       `• Investment: Rs. ${total} %0A%0A` +
                       `Please connect with me to finalize the bespoke design!`;
