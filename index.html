@@ -21,10 +21,10 @@
             color: var(--charcoal);
             display: flex;
             justify-content: center;
-            align-items: flex-start; /* Better for scrolling on mobile */
+            align-items: flex-start;
             min-height: 100vh;
             margin: 0;
-            padding: 20px 15px; /* Added side padding for mobile */
+            padding: 20px 15px;
             box-sizing: border-box;
         }
 
@@ -33,7 +33,6 @@
             width: 100%;
             max-width: 380px;
             padding: 40px 30px;
-            border-radius: 0;
             box-shadow: 0 40px 80px rgba(0,0,0,0.05);
             text-align: center;
             box-sizing: border-box;
@@ -44,27 +43,54 @@
             letter-spacing: 3px;
             text-transform: uppercase;
             color: #ccc;
-            margin-bottom: 15px;
             display: block;
+            text-align: left;
+            margin-bottom: 15px;
+        }
+
+        .gallery-container {
+            position: relative;
+            margin-bottom: 8px;
         }
 
         .gallery-scroll {
             display: flex;
             overflow-x: auto;
             gap: 12px;
-            margin-bottom: 30px;
-            padding-bottom: 15px;
+            padding-bottom: 10px;
             scrollbar-width: none;
-            -webkit-overflow-scrolling: touch; /* Smooth scroll for iOS */
+            -webkit-overflow-scrolling: touch;
+            scroll-snap-type: x mandatory;
         }
         .gallery-scroll::-webkit-scrollbar { display: none; }
 
         .gallery-item {
-            min-width: 140px;
-            height: 140px;
+            min-width: 160px;
+            height: 160px;
             background-color: #fdfdfd;
             border: 1px solid #f0f0f0;
             object-fit: cover;
+            scroll-snap-align: center;
+        }
+
+        .pagination-dots {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 35px;
+        }
+
+        .dot {
+            width: 4px;
+            height: 4px;
+            background-color: #e0e0e0;
+            border-radius: 50%;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .dot.active {
+            background-color: var(--gold);
+            transform: scale(1.5);
         }
 
         h2 {
@@ -73,7 +99,6 @@
             text-transform: uppercase;
             margin-bottom: 30px;
             font-size: 1rem;
-            color: var(--charcoal);
             border-bottom: 1px solid #eee;
             padding-bottom: 15px;
         }
@@ -101,12 +126,12 @@
             font-size: 1rem;
             color: var(--charcoal);
             outline: none;
-            cursor: pointer;
             font-family: 'Georgia', serif;
-            border-radius: 0; /* Prevents iOS rounding */
-            -webkit-appearance: none; /* Uniform styling for iOS */
+            border-radius: 0;
+            -webkit-appearance: none;
         }
 
+        /* PRIMARY BUTTON WITH HOVER */
         .primary-btn {
             width: 100%;
             padding: 18px;
@@ -117,11 +142,18 @@
             letter-spacing: 3px;
             font-size: 0.75rem;
             cursor: pointer;
-            transition: all 0.4s ease;
+            transition: all 0.3s ease-in-out;
             margin-top: 5px;
             font-family: 'Georgia', serif;
         }
 
+        .primary-btn:hover {
+            background-color: var(--gold);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+
+        /* SECONDARY BUTTON WITH HOVER */
         .secondary-btn {
             width: 100%;
             padding: 15px;
@@ -133,20 +165,14 @@
             font-size: 0.65rem;
             cursor: pointer;
             margin-top: 10px;
+            transition: all 0.3s ease-in-out;
             font-family: 'Georgia', serif;
         }
 
-        /* MOBILE SPECIFIC OVERRIDES */
-        @media screen and (max-width: 480px) {
-            .luxury-card {
-                padding: 30px 20px;
-            }
-            .total-price {
-                font-size: 1.75rem;
-            }
-            input, select {
-                font-size: 16px; /* Prevents auto-zoom on iPhone */
-            }
+        .secondary-btn:hover {
+            border-color: var(--gold);
+            color: var(--gold);
+            transform: translateY(-2px);
         }
 
         #output {
@@ -163,7 +189,6 @@
             background-color: #fafafa;
             padding: 15px;
             margin: 20px 0;
-            border-radius: 0;
             text-align: left;
             font-size: 0.75rem;
         }
@@ -175,10 +200,7 @@
             color: #666;
         }
 
-        .free-text {
-            color: #28a745;
-            font-weight: bold;
-        }
+        .free-text { color: #28a745; font-weight: bold; text-transform: uppercase; }
 
         .total-row {
             margin-top: 20px;
@@ -186,11 +208,7 @@
             border-top: 1px double #eee;
         }
 
-        .total-price {
-            font-size: 2rem;
-            color: var(--charcoal);
-            font-weight: 300;
-        }
+        .total-price { font-size: 2rem; color: var(--charcoal); font-weight: 300; }
 
         #finalActions { display: none; margin-top: 15px; }
     </style>
@@ -199,11 +217,14 @@
 
 <div class="luxury-card">
     <span class="lookbook-label">The Portfolio</span>
-    <div class="gallery-scroll">
-        <img class="gallery-item" src="insta 1_3.jpg" alt="Pura 1">
-        <img class="gallery-item" src="insta 2_20250202_92712107.jpg" alt="Pura 2">
-        <img class="gallery-item" src="insta 2 (1)_20250129_1018166.jpg" alt="Pura 3">
+    <div class="gallery-container">
+        <div class="gallery-scroll" id="gallery">
+            <img class="gallery-item" src="insta 1_3.jpg" alt="Pura 1">
+            <img class="gallery-item" src="insta 2_20250202_92712107.jpg" alt="Pura 2">
+            <img class="gallery-item" src="insta 2 (1)_20250129_1018166.jpg" alt="Pura 3">
+        </div>
     </div>
+    <div class="pagination-dots" id="dotsContainer"></div>
 
     <h2>PuraPersonal</h2>
     
@@ -229,12 +250,12 @@
         </div>
 
         <div class="breakdown-box">
-            <div class="breakdown-row"><span id="bottleSummary">Bottles</span><span id="standardTotal"></span></div>
+            <div class="breakdown-row"><span id="bottleSummary">Premium Bottles</span><span id="standardTotal"></span></div>
             <div class="breakdown-row"><span id="boxSummary">Packaging</span><span class="free-text">INCLUDED</span></div>
-            <div class="breakdown-row"><span>Label Design</span><span class="free-text">FREE</span></div>
-            <div class="breakdown-row"><span>Nagpur Delivery</span><span class="free-text">FREE</span></div>
+            <div class="breakdown-row"><span>Bespoke Label Design & Curation</span><span class="free-text">FREE</span></div>
+            <div class="breakdown-row"><span>Nagpur Logistics & Concierge Delivery</span><span class="free-text">FREE</span></div>
             <div class="breakdown-row" id="savingsRow" style="display:none; color: var(--gold); font-weight: bold; border-top: 1px solid #eee; padding-top: 8px; margin-top: 5px;">
-                <span id="savingsLabel">Discount</span><span id="savingsAmount"></span>
+                <span id="savingsLabel">Special Discount</span><span id="savingsAmount"></span>
             </div>
         </div>
 
@@ -255,6 +276,26 @@
 </div>
 
 <script>
+    // Dot Logic
+    const gallery = document.getElementById('gallery');
+    const container = document.getElementById('dotsContainer');
+    const images = gallery.querySelectorAll('img');
+    function initDots() {
+        container.innerHTML = '';
+        for (let i = 0; i < images.length - 1; i++) {
+            const dot = document.createElement('div');
+            dot.className = 'dot' + (i === 0 ? ' active' : '');
+            container.appendChild(dot);
+        }
+    }
+    initDots();
+    gallery.addEventListener('scroll', () => {
+        const dots = document.querySelectorAll('.dot');
+        const scrollFraction = gallery.scrollLeft / (gallery.scrollWidth - gallery.clientWidth);
+        const activeIndex = Math.round(scrollFraction * (dots.length - 1));
+        dots.forEach((dot, index) => dot.classList.toggle('active', index === activeIndex));
+    });
+
     function calculateQuote() {
         let guests = document.getElementById('guests').value;
         let consumption = document.getElementById('eventType').value;
@@ -264,28 +305,23 @@
         let totalBoxes = Math.ceil(totalBottlesNeeded / 42);
         let finalBottles = totalBoxes * 42;
         let basePrice = 6.00;
-        let finalPricePerBottle = 6.00; 
-        let headline = "";
-        let percLabel = "";
-
-        if (finalBottles >= 2000) { finalPricePerBottle = 5.58; headline = "Elite Volume Curation"; percLabel = "Special Discount (7%)"; } 
-        else if (finalBottles >= 1000) { finalPricePerBottle = 5.82; headline = "Signature Partner Rate"; percLabel = "Special Discount (3%)"; }
+        let finalPricePerBottle = (finalBottles >= 2000) ? 5.58 : (finalBottles >= 1000) ? 5.82 : 6.00;
 
         let standardRevenue = finalBottles * basePrice;
         let finalRevenue = finalBottles * finalPricePerBottle;
         let totalSavings = standardRevenue - finalRevenue;
 
-        document.getElementById('bottleSummary').innerText = `${finalBottles} Premium Bottles`;
-        document.getElementById('boxSummary').innerText = `${totalBoxes} Boxes (42 per box)`;
+        document.getElementById('bottleSummary').innerText = `Premium 250ml ${finalBottles} Bottles (Rs. 6/bottle)`;
+        document.getElementById('boxSummary').innerText = `Packaging: ${totalBoxes} Boxes (42 Bottles/Box)`;
         document.getElementById('standardTotal').innerText = "Rs. " + standardRevenue.toLocaleString('en-IN');
         document.getElementById('outRate').innerText = finalPricePerBottle.toFixed(2);
         
         if (totalSavings > 0) {
             document.getElementById('savingsRow').style.display = 'flex';
-            document.getElementById('savingsLabel').innerText = percLabel;
+            document.getElementById('savingsLabel').innerText = (finalBottles >= 2000) ? "Special Discount (7%)" : "Special Discount (3%)";
             document.getElementById('savingsAmount').innerText = "- Rs. " + Math.round(totalSavings).toLocaleString('en-IN');
             document.getElementById('discountContainer').style.display = 'block';
-            document.getElementById('outDiscount').innerText = headline;
+            document.getElementById('outDiscount').innerText = (finalBottles >= 2000) ? "Elite Volume Curation" : "Signature Partner Rate";
         } else {
             document.getElementById('savingsRow').style.display = 'none';
             document.getElementById('discountContainer').style.display = 'none';
@@ -294,7 +330,6 @@
         document.getElementById('outTotal').innerText = Math.round(finalRevenue).toLocaleString('en-IN');
         document.getElementById('output').style.display = 'block';
         document.getElementById('finalActions').style.display = 'block';
-
         setTimeout(() => { document.getElementById('output').scrollIntoView({ behavior: 'smooth' }); }, 100);
     }
 
@@ -304,19 +339,55 @@
         const guests = document.getElementById('guests').value;
         const consumption = document.getElementById('eventType').value;
         let finalBottles = Math.ceil((guests * consumption) / 42) * 42;
+        let totalBoxes = Math.ceil(finalBottles / 42);
         let rate = (finalBottles >= 2000) ? 5.58 : (finalBottles >= 1000) ? 5.82 : 6.00;
-        let total = Math.round(finalBottles * rate).toLocaleString('en-IN');
+        let finalRevenue = Math.round(finalBottles * rate);
+        let standardTotalVal = finalBottles * 6;
+        let savingsVal = standardTotalVal - finalRevenue;
+        let date = new Date().toLocaleDateString();
 
-        doc.setFont("times", "bold").setFontSize(26).text("PURAPERSONAL", 105, 40, { align: "center" });
-        doc.setFont("times", "italic").setFontSize(10).setTextColor(150).text("Customized Water Bottle | Nagpur, India", 105, 48, { align: "center" });
+        doc.setFont("times", "bold").setFontSize(26).setTextColor(26).text("PURAPERSONAL", 105, 40, { align: "center", charSpace: 2 });
+        doc.setFont("times", "italic").setFontSize(10).setTextColor(150).text("Your Customized Water Bottle | Nagpur, India", 105, 48, { align: "center" });
         doc.setDrawColor(230).line(40, 55, 170, 55);
+
+        doc.setFont("times", "normal").setFontSize(10).setTextColor(100).text(`DATE: ${date}`, 40, 70);
+        doc.text(`CLIENT CAPACITY: ${guests} GUESTS`, 40, 76);
         
-        doc.setFont("times", "normal").setFontSize(11).setTextColor(26).text(`Premium 250ml Bottles (${finalBottles} bottles)`, 40, 110);
-        doc.text(`Rs. ${total}`, 170, 110, { align: "right" });
-        doc.setFontSize(14).setFont("times", "bold").text("FINAL INVESTMENT", 40, 168);
-        doc.text(`Rs. ${total}`, 170, 168, { align: "right" });
-        doc.setFontSize(10).setFont("times", "italic").text("Best quality and premium logistics.", 105, 210, { align: "center" });
-        doc.setFont("times", "bold").text("CONTACT: +91 9209812873", 105, 216, { align: "center" });
+        doc.setFont("helvetica", "bold").setFontSize(9).setTextColor(178, 148, 94).text("SERVICE DESCRIPTION", 40, 95);
+        doc.text("INVESTMENT", 170, 95, { align: "right" });
+        doc.setDrawColor(178, 148, 94).setLineWidth(0.5).line(40, 98, 170, 98);
+
+        doc.setFont("times", "normal").setFontSize(11).setTextColor(26);
+        doc.text(`Premium 250ml ${finalBottles} Bottles (Rs. 6/bottle)`, 40, 110);
+        doc.text(`Rs. ${standardTotalVal.toLocaleString('en-IN')}`, 170, 110, { align: "right" });
+        
+        let currentY = 120;
+        if (savingsVal > 0) {
+            doc.setFont("times", "bold").setTextColor(178, 148, 94);
+            let discLabel = (finalBottles >= 2000) ? "Special Discount (7%)" : "Special Discount (3%)";
+            doc.text(discLabel, 40, currentY);
+            doc.text(`- Rs. ${savingsVal.toLocaleString('en-IN')}`, 170, currentY, { align: "right" });
+            currentY += 10;
+        }
+
+        doc.setFont("times", "normal").setFontSize(10).setTextColor(120);
+        doc.text(`Packaging: ${totalBoxes} Boxes (42 Bottles/Box)`, 40, currentY);
+        doc.text("INCLUDED", 170, currentY, { align: "right" });
+        currentY += 10;
+        doc.text("Bespoke Label Design & Curation", 40, currentY);
+        doc.text("FREE", 170, currentY, { align: "right" });
+        currentY += 10;
+        doc.text("Nagpur Logistics & Concierge Delivery", 40, currentY);
+        doc.text("FREE", 170, currentY, { align: "right" });
+
+        doc.setDrawColor(230).setLineWidth(0.1).line(40, 155, 170, 155);
+        doc.setFont("times", "bold").setFontSize(14).setTextColor(26).text("FINAL PROJECT INVESTMENT", 40, 168);
+        doc.text(`Rs. ${finalRevenue.toLocaleString('en-IN')}`, 170, 168, { align: "right" });
+        doc.setFont("times", "italic").setFontSize(9).setTextColor(150).text(`*Applied Rate: Rs. ${rate.toFixed(2)} per bottle`, 40, 175);
+
+        doc.setFont("times", "italic").setFontSize(10).setTextColor(100).text("Best quality and premium logistics.", 105, 210, { align: "center" });
+        doc.setFont("times", "bold").setTextColor(26).text("CONTACT: +91 9209812873", 105, 216, { align: "center" });
+
         doc.save(`PuraPersonal_Proposal.pdf`);
     }
 
@@ -324,11 +395,15 @@
         const guests = document.getElementById('guests').value;
         const total = document.getElementById('outTotal').innerText;
         const rate = document.getElementById('outRate').innerText;
-        let message = `Hello PuraPersonal! %0A%0AI have reviewed the Lookbook: %0A` +
-                      `• Event: ${guests} Guests %0A` +
-                      `• Final Rate: Rs. ${rate}/bottle %0A` +
-                      `• Total Investment: Rs. ${total}%0A%0A` +
-                      `Please connect with me!`;
+        let finalBottles = Math.ceil((guests * document.getElementById('eventType').value) / 42) * 42;
+        let totalBoxes = Math.ceil(finalBottles / 42);
+
+        let message = `Hello PuraPersonal! %0A%0AI have reviewed the Lookbook and would like to order: %0A%0A` +
+                      `• Capacity: ${guests} Guests %0A` +
+                      `• Quantity: ${finalBottles} Bottles (250ml) %0A` +
+                      `• Packaging: ${totalBoxes} Boxes (42 per box) %0A` +
+                      `• Investment: Rs. ${total} %0A%0A` +
+                      `Please connect with me to finalize the bespoke design!`;
         window.open(`https://wa.me/919209812873?text=${message}`, '_blank');
     }
 </script>
