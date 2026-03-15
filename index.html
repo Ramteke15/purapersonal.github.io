@@ -209,9 +209,9 @@
 <div class="luxury-card">
     <span class="lookbook-label">The Portfolio</span>
     <div class="gallery-scroll">
-        <img class="gallery-item" src="insta 1_3.jpg" alt="Black Fox Coffee">
-        <img class="gallery-item" src="insta 2_20250202_92712107.jpg" alt="Batukbhai Jewellers">
-        <img class="gallery-item" src="insta 2 (1)_20250129_1018166.jpg" alt="The Arvind Store">
+        <img class="gallery-item" src="insta 1_3.jpg" alt="Portfolio Image 1">
+        <img class="gallery-item" src="insta 2_20250202_92712107.jpg" alt="Portfolio Image 2">
+        <img class="gallery-item" src="insta 2 (1)_20250129_1018166.jpg" alt="Portfolio Image 3">
     </div>
 
     <h2>PuraPersonal</h2>
@@ -320,7 +320,7 @@
         if (totalSavings > 0) {
             document.getElementById('savingsRow').style.display = 'flex';
             document.getElementById('savingsLabel').innerText = percLabel;
-            document.getElementById('savingsAmount').innerText = "- ₹" + totalSavings.toLocaleString('en-IN');
+            document.getElementById('savingsAmount').innerText = "- ₹" + Math.round(totalSavings).toLocaleString('en-IN');
             document.getElementById('discountContainer').style.display = 'block';
             document.getElementById('outDiscount').innerText = headline;
         } else {
@@ -328,7 +328,7 @@
             document.getElementById('discountContainer').style.display = 'none';
         }
         
-        document.getElementById('outTotal').innerText = finalRevenue.toLocaleString('en-IN');
+        document.getElementById('outTotal').innerText = Math.round(finalRevenue).toLocaleString('en-IN');
         document.getElementById('output').style.display = 'block';
         document.getElementById('finalActions').style.display = 'block';
 
@@ -352,10 +352,11 @@
         if (finalBottles >= 2000) { finalPricePerBottle = 5.58; } 
         else if (finalBottles >= 1000) { finalPricePerBottle = 5.82; }
 
-        let finalRevenue = finalBottles * finalPricePerBottle;
+        let finalRevenue = Math.round(finalBottles * finalPricePerBottle);
         let formattedTotal = finalRevenue.toLocaleString('en-IN');
         let date = new Date().toLocaleDateString();
 
+        // PDF Styling - No Currency Symbols to prevent '¹' error
         doc.setFont("times", "normal");
         doc.setFontSize(24);
         doc.text("PURAPERSONAL", 105, 40, { align: "center" });
@@ -375,7 +376,7 @@
 
         doc.setFont("helvetica", "normal");
         doc.text(`Premium 250ml Bottles (${finalBottles} Bottles)`, 40, 115);
-        doc.text(`INR ${formattedTotal}`, 170, 115, { align: "right" });
+        doc.text(`${formattedTotal}`, 170, 115, { align: "right" });
 
         doc.text(`Units: ${totalBoxes} Boxes (42 Bottles)`, 40, 125);
         doc.text("INCLUDED", 170, 125, { align: "right" });
@@ -390,28 +391,32 @@
         doc.setFontSize(14);
         doc.setFont("helvetica", "bold");
         doc.text("Total Project Investment", 40, 165);
-        doc.text(`INR ${formattedTotal}`, 170, 165, { align: "right" });
+        doc.text(`${formattedTotal}`, 170, 165, { align: "right" });
 
         doc.setFontSize(10);
-        doc.text(`(Rate applied: INR ${finalPricePerBottle.toFixed(2)} / bottle)`, 40, 172);
+        doc.text(`(Rate applied: ${finalPricePerBottle.toFixed(2)} per bottle)`, 40, 172);
 
         doc.setFontSize(9);
         doc.setFont("times", "italic");
-        doc.text("Handcrafted quality and premium logistics.", 105, 190, { align: "center" });
-        doc.text("Direct Contact: +91 9209812873", 105, 195, { align: "center" });
+        doc.text("Handcrafted quality and premium logistics.", 105, 200, { align: "center" });
+        doc.text("Direct Contact: +91 9209812873", 105, 205, { align: "center" });
 
         doc.save(`PuraPersonal_Proposal.pdf`);
     }
 
     function sendOrderWhatsApp() {
-        const bottleSum = document.getElementById('bottleSummary').innerText;
-        const boxSum = document.getElementById('boxSummary').innerText;
+        const guests = document.getElementById('guests').value;
+        const consumption = document.getElementById('eventType').value;
+        let totalBottlesNeeded = guests * consumption;
+        let totalBoxes = Math.ceil(totalBottlesNeeded / 42);
+        let finalBottles = totalBoxes * 42;
+        
         const total = document.getElementById('outTotal').innerText;
         const rate = document.getElementById('outRate').innerText;
 
         let message = `Hello PuraPersonal! %0A%0AI have reviewed the Lookbook and would like to place an order: %0A%0A` +
-                      `• ${bottleSum}%0A` +
-                      `• ${boxSum}%0A` +
+                      `• Premium 250ml Bottles: ${finalBottles}%0A` +
+                      `• Units: ${totalBoxes} Boxes (42 Bottles)%0A` +
                       `• Final Rate: ₹${rate}/bottle %0A` +
                       `• Total Investment: ₹${total}%0A%0A` +
                       `Please connect with me to finalize the custom design!`;
