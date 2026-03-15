@@ -375,7 +375,7 @@
 
         doc.setFont("helvetica", "normal");
         doc.text(`Premium 250ml Bottles (${finalBottles} Bottles)`, 40, 115);
-        doc.text(`₹ ${formattedTotal}`, 170, 115, { align: "right" });
+        doc.text(`INR ${formattedTotal}`, 170, 115, { align: "right" });
 
         doc.text(`Units: ${totalBoxes} Boxes (42 Bottles)`, 40, 125);
         doc.text("INCLUDED", 170, 125, { align: "right" });
@@ -397,8 +397,8 @@
 
         doc.setFontSize(9);
         doc.setFont("times", "italic");
-        doc.text("Handcrafted quality and premium logistics.", 105, 200, { align: "center" });
-        doc.text("Direct Contact: +91 9209812873", 105, 205, { align: "center" });
+        doc.text("Handcrafted quality and premium logistics.", 105, 190, { align: "center" });
+        doc.text("Direct Contact: +91 9209812873", 105, 195, { align: "center" });
 
         doc.save(`PuraPersonal_Proposal.pdf`);
     }
