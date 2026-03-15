@@ -31,7 +31,7 @@
         .luxury-card {
             background: var(--off-white);
             width: 100%;
-            max-width: 380px;
+            max-width: 400px;
             padding: 40px 30px;
             box-shadow: 0 40px 80px rgba(0,0,0,0.05);
             text-align: center;
@@ -45,28 +45,31 @@
             color: #ccc;
             display: block;
             text-align: left;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
         }
 
         .gallery-container {
             position: relative;
-            margin-bottom: 8px;
+            width: 100%;
+            margin-bottom: 12px;
+            overflow: hidden;
         }
 
         .gallery-scroll {
             display: flex;
             overflow-x: auto;
-            gap: 12px;
-            padding-bottom: 10px;
+            gap: 15px;
+            padding-bottom: 15px;
             scrollbar-width: none;
             -webkit-overflow-scrolling: touch;
             scroll-snap-type: x mandatory;
+            padding-left: 2px;
         }
         .gallery-scroll::-webkit-scrollbar { display: none; }
 
         .gallery-item {
-            min-width: 160px;
-            height: 160px;
+            min-width: 260px;
+            height: 260px;
             background-color: #fdfdfd;
             border: 1px solid #f0f0f0;
             object-fit: cover;
@@ -76,13 +79,13 @@
         .pagination-dots {
             display: flex;
             justify-content: center;
-            gap: 8px;
-            margin-bottom: 35px;
+            gap: 10px;
+            margin-bottom: 40px;
         }
 
         .dot {
-            width: 4px;
-            height: 4px;
+            width: 5px;
+            height: 5px;
             background-color: #e0e0e0;
             border-radius: 50%;
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
@@ -90,17 +93,17 @@
 
         .dot.active {
             background-color: var(--gold);
-            transform: scale(1.5);
+            transform: scale(1.6);
         }
 
         h2 {
             font-weight: 300;
-            letter-spacing: 6px;
+            letter-spacing: 7px;
             text-transform: uppercase;
-            margin-bottom: 30px;
-            font-size: 1rem;
+            margin-bottom: 35px;
+            font-size: 1.1rem;
             border-bottom: 1px solid #eee;
-            padding-bottom: 15px;
+            padding-bottom: 20px;
         }
 
         .input-group {
@@ -112,8 +115,8 @@
             display: block;
             font-size: 0.6rem;
             text-transform: uppercase;
-            letter-spacing: 2px;
-            margin-bottom: 8px;
+            letter-spacing: 2.5px;
+            margin-bottom: 10px;
             color: #aaa;
         }
 
@@ -123,7 +126,7 @@
             border: none;
             border-bottom: 1px solid #eaeaea;
             background: transparent;
-            font-size: 1rem;
+            font-size: 1.05rem;
             color: var(--charcoal);
             outline: none;
             font-family: 'Georgia', serif;
@@ -131,15 +134,14 @@
             -webkit-appearance: none;
         }
 
-        /* PRIMARY BUTTON WITH HOVER */
         .primary-btn {
             width: 100%;
-            padding: 18px;
+            padding: 20px;
             background-color: var(--charcoal);
             color: white;
             border: none;
             text-transform: uppercase;
-            letter-spacing: 3px;
+            letter-spacing: 4px;
             font-size: 0.75rem;
             cursor: pointer;
             transition: all 0.3s ease-in-out;
@@ -153,7 +155,6 @@
             box-shadow: 0 10px 20px rgba(0,0,0,0.1);
         }
 
-        /* SECONDARY BUTTON WITH HOVER */
         .secondary-btn {
             width: 100%;
             padding: 15px;
@@ -176,8 +177,8 @@
         }
 
         #output {
-            margin-top: 30px;
-            padding-top: 25px;
+            margin-top: 35px;
+            padding-top: 30px;
             border-top: 1px solid #f5f5f5;
             display: none;
             animation: fadeIn 0.8s ease;
@@ -196,21 +197,37 @@
         .breakdown-row {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 10px;
+            margin-bottom: 5px;
             color: #666;
+        }
+
+        /* Formatting with vertical gap (margin-top) */
+        .sub-label {
+            font-size: 0.65rem;
+            opacity: 0.75;
+            display: block;
+            margin-top: 4px; /* Added gap between title and sub-info */
+            margin-bottom: 12px;
         }
 
         .free-text { color: #28a745; font-weight: bold; text-transform: uppercase; }
 
         .total-row {
-            margin-top: 20px;
-            padding-top: 15px;
+            margin-top: 25px;
+            padding-top: 20px;
             border-top: 1px double #eee;
         }
 
-        .total-price { font-size: 2rem; color: var(--charcoal); font-weight: 300; }
+        .total-price { font-size: 2.2rem; color: var(--charcoal); font-weight: 300; }
 
-        #finalActions { display: none; margin-top: 15px; }
+        #finalActions { display: none; margin-top: 20px; }
+
+        @media screen and (max-width: 480px) {
+            .luxury-card { padding: 30px 20px; }
+            .gallery-item { min-width: 220px; height: 220px; }
+            .total-price { font-size: 1.85rem; }
+            input, select { font-size: 16px; }
+        }
     </style>
 </head>
 <body>
@@ -250,12 +267,35 @@
         </div>
 
         <div class="breakdown-box">
-            <div class="breakdown-row"><span id="bottleSummary">Premium Bottles</span><span id="standardTotal"></span></div>
-            <div class="breakdown-row"><span id="boxSummary">Packaging</span><span class="free-text">INCLUDED</span></div>
-            <div class="breakdown-row"><span>Bespoke Label Design & Curation</span><span class="free-text">FREE</span></div>
-            <div class="breakdown-row"><span>Nagpur Logistics & Concierge Delivery</span><span class="free-text">FREE</span></div>
-            <div class="breakdown-row" id="savingsRow" style="display:none; color: var(--gold); font-weight: bold; border-top: 1px solid #eee; padding-top: 8px; margin-top: 5px;">
-                <span id="savingsLabel">Special Discount</span><span id="savingsAmount"></span>
+            <div class="breakdown-row">
+                <div>
+                    <span id="bottleSummary">Premium Bottles</span>
+                    <span class="sub-label">(Rs. 6/bottle)</span>
+                </div>
+                <span id="standardTotal"></span>
+            </div>
+
+            <div class="breakdown-row">
+                <div>
+                    <span id="boxSummary">Packaging</span>
+                    <span class="sub-label">(42 Bottles/Box)</span>
+                </div>
+                <span class="free-text">INCLUDED</span>
+            </div>
+
+            <div class="breakdown-row" style="margin-top: 5px;">
+                <span>Bespoke Label Design</span>
+                <span class="free-text">FREE</span>
+            </div>
+
+            <div class="breakdown-row" style="margin-top: 10px;">
+                <span>Nagpur Logistics & Delivery</span>
+                <span class="free-text">FREE</span>
+            </div>
+
+            <div class="breakdown-row" id="savingsRow" style="display:none; color: var(--gold); font-weight: bold; border-top: 1px solid #eee; padding-top: 8px; margin-top: 10px;">
+                <span id="savingsLabel">Special Discount</span>
+                <span id="savingsAmount"></span>
             </div>
         </div>
 
@@ -276,22 +316,27 @@
 </div>
 
 <script>
-    // Dot Logic
     const gallery = document.getElementById('gallery');
     const container = document.getElementById('dotsContainer');
     const images = gallery.querySelectorAll('img');
+    
     function initDots() {
         container.innerHTML = '';
-        for (let i = 0; i < images.length - 1; i++) {
+        if (images.length <= 1) return;
+        const dotCount = images.length - 1;
+        for (let i = 0; i < dotCount; i++) {
             const dot = document.createElement('div');
             dot.className = 'dot' + (i === 0 ? ' active' : '');
             container.appendChild(dot);
         }
     }
     initDots();
+
     gallery.addEventListener('scroll', () => {
         const dots = document.querySelectorAll('.dot');
-        const scrollFraction = gallery.scrollLeft / (gallery.scrollWidth - gallery.clientWidth);
+        if (dots.length === 0) return;
+        const maxScroll = gallery.scrollWidth - gallery.clientWidth;
+        const scrollFraction = maxScroll > 0 ? gallery.scrollLeft / maxScroll : 0;
         const activeIndex = Math.round(scrollFraction * (dots.length - 1));
         dots.forEach((dot, index) => dot.classList.toggle('active', index === activeIndex));
     });
@@ -311,8 +356,8 @@
         let finalRevenue = finalBottles * finalPricePerBottle;
         let totalSavings = standardRevenue - finalRevenue;
 
-        document.getElementById('bottleSummary').innerText = `Premium 250ml ${finalBottles} Bottles (Rs. 6/bottle)`;
-        document.getElementById('boxSummary').innerText = `Packaging: ${totalBoxes} Boxes (42 Bottles/Box)`;
+        document.getElementById('bottleSummary').innerText = `Premium ${finalBottles} Bottles`;
+        document.getElementById('boxSummary').innerText = `Packaging: ${totalBoxes} Boxes`;
         document.getElementById('standardTotal').innerText = "Rs. " + standardRevenue.toLocaleString('en-IN');
         document.getElementById('outRate').innerText = finalPricePerBottle.toFixed(2);
         
@@ -358,34 +403,39 @@
         doc.setDrawColor(178, 148, 94).setLineWidth(0.5).line(40, 98, 170, 98);
 
         doc.setFont("times", "normal").setFontSize(11).setTextColor(26);
-        doc.text(`Premium 250ml ${finalBottles} Bottles (Rs. 6/bottle)`, 40, 110);
+        doc.text(`Premium ${finalBottles} Bottles`, 40, 110);
         doc.text(`Rs. ${standardTotalVal.toLocaleString('en-IN')}`, 170, 110, { align: "right" });
+        doc.setFontSize(9).setTextColor(150).text(`(Rs. 6/bottle)`, 40, 115);
         
-        let currentY = 120;
+        let currentY = 125;
         if (savingsVal > 0) {
-            doc.setFont("times", "bold").setTextColor(178, 148, 94);
+            doc.setFont("times", "bold").setFontSize(11).setTextColor(178, 148, 94);
             let discLabel = (finalBottles >= 2000) ? "Special Discount (7%)" : "Special Discount (3%)";
             doc.text(discLabel, 40, currentY);
             doc.text(`- Rs. ${savingsVal.toLocaleString('en-IN')}`, 170, currentY, { align: "right" });
             currentY += 10;
         }
 
-        doc.setFont("times", "normal").setFontSize(10).setTextColor(120);
-        doc.text(`Packaging: ${totalBoxes} Boxes (42 Bottles/Box)`, 40, currentY);
+        doc.setFont("times", "normal").setFontSize(10).setTextColor(26);
+        doc.text(`Packaging: ${totalBoxes} Boxes`, 40, currentY);
         doc.text("INCLUDED", 170, currentY, { align: "right" });
-        currentY += 10;
-        doc.text("Bespoke Label Design & Curation", 40, currentY);
+        doc.setFontSize(9).setTextColor(150).text(`(42 Bottles/Box)`, 40, currentY + 5);
+        currentY += 15;
+        
+        doc.setFontSize(10).setTextColor(26);
+        doc.text("Bespoke Label Design", 40, currentY);
         doc.text("FREE", 170, currentY, { align: "right" });
         currentY += 10;
-        doc.text("Nagpur Logistics & Concierge Delivery", 40, currentY);
+        
+        doc.text("Nagpur Logistics & Delivery", 40, currentY);
         doc.text("FREE", 170, currentY, { align: "right" });
 
-        doc.setDrawColor(230).setLineWidth(0.1).line(40, 155, 170, 155);
-        doc.setFont("times", "bold").setFontSize(14).setTextColor(26).text("FINAL PROJECT INVESTMENT", 40, 168);
-        doc.text(`Rs. ${finalRevenue.toLocaleString('en-IN')}`, 170, 168, { align: "right" });
-        doc.setFont("times", "italic").setFontSize(9).setTextColor(150).text(`*Applied Rate: Rs. ${rate.toFixed(2)} per bottle`, 40, 175);
+        doc.setDrawColor(230).setLineWidth(0.1).line(40, 175, 170, 175);
+        doc.setFont("times", "bold").setFontSize(14).setTextColor(26).text("FINAL PROJECT INVESTMENT", 40, 188);
+        doc.text(`Rs. ${finalRevenue.toLocaleString('en-IN')}`, 170, 188, { align: "right" });
+        doc.setFont("times", "italic").setFontSize(9).setTextColor(150).text(`*Applied Rate: Rs. ${rate.toFixed(2)} per bottle`, 40, 195);
 
-        doc.setFont("times", "italic").setFontSize(10).setTextColor(100).text("Best quality and premium logistics.", 105, 210, { align: "center" });
+        doc.setFont("times", "italic").setFontSize(10).setTextColor(100).text("Best quality and premium logistics.", 105, 220, { align: "center" });
         doc.setFont("times", "bold").setTextColor(26).text("CONTACT: +91 9209812873", 105, 216, { align: "center" });
 
         doc.save(`PuraPersonal_Proposal.pdf`);
@@ -400,7 +450,7 @@
 
         let message = `Hello PuraPersonal! %0A%0AI have reviewed the Lookbook and would like to order: %0A%0A` +
                       `• Capacity: ${guests} Guests %0A` +
-                      `• Quantity: ${finalBottles} Bottles (250ml) %0A` +
+                      `• Quantity: ${finalBottles} Bottles %0A` +
                       `• Packaging: ${totalBoxes} Boxes (42 per box) %0A` +
                       `• Investment: Rs. ${total} %0A%0A` +
                       `Please connect with me to finalize the bespoke design!`;
