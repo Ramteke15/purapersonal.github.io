@@ -51,7 +51,7 @@
         .gallery-container {
             position: relative;
             width: 100%;
-            margin-bottom: 12px;
+            margin-bottom: 40px; /* Spacing added back here since dots are gone */
             overflow: hidden;
         }
 
@@ -59,7 +59,7 @@
             display: flex;
             overflow-x: auto;
             gap: 15px;
-            padding-bottom: 15px;
+            padding-bottom: 5px;
             scrollbar-width: none;
             -webkit-overflow-scrolling: touch;
             scroll-snap-type: x mandatory;
@@ -67,35 +67,14 @@
         }
         .gallery-scroll::-webkit-scrollbar { display: none; }
 
-        /* Adjusted for 4:5 Aspect Ratio */
         .gallery-item {
-            height: 325px; /* Vertical length maintained */
-            width: 260px;  /* Calculated for 4:5 ratio (325 * 0.8) */
+            height: 325px; 
+            width: 260px;  /* 4:5 ratio */
             background-color: #fdfdfd;
             border: 1px solid #f0f0f0;
             object-fit: cover;
             scroll-snap-align: center;
             flex-shrink: 0;
-        }
-
-        .pagination-dots {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            margin-bottom: 40px;
-        }
-
-        .dot {
-            width: 5px;
-            height: 5px;
-            background-color: #e0e0e0;
-            border-radius: 50%;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .dot.active {
-            background-color: var(--gold);
-            transform: scale(1.6);
         }
 
         h2 {
@@ -237,12 +216,11 @@
     <span class="lookbook-label">The Portfolio</span>
     <div class="gallery-container">
         <div class="gallery-scroll" id="gallery">
-            <img class="gallery-item" src="1.jpg" alt="Pura Curation 1">
-            <img class="gallery-item" src="2.jpg" alt="Pura Curation 2">
-            <img class="gallery-item" src="3.jpg" alt="Pura Curation 3">
+            <img class="gallery-item" src="portfolio1.jpg" alt="Pura Curation 1">
+            <img class="gallery-item" src="portfolio2.jpg" alt="Pura Curation 2">
+            <img class="gallery-item" src="portfolio3.jpg" alt="Pura Curation 3">
         </div>
     </div>
-    <div class="pagination-dots" id="dotsContainer"></div>
 
     <h2>PuraPersonal</h2>
     
@@ -317,31 +295,6 @@
 </div>
 
 <script>
-    const gallery = document.getElementById('gallery');
-    const container = document.getElementById('dotsContainer');
-    const images = gallery.querySelectorAll('img');
-    
-    function initDots() {
-        container.innerHTML = '';
-        if (images.length <= 1) return;
-        const dotCount = images.length - 1;
-        for (let i = 0; i < dotCount; i++) {
-            const dot = document.createElement('div');
-            dot.className = 'dot' + (i === 0 ? ' active' : '');
-            container.appendChild(dot);
-        }
-    }
-    initDots();
-
-    gallery.addEventListener('scroll', () => {
-        const dots = document.querySelectorAll('.dot');
-        if (dots.length === 0) return;
-        const maxScroll = gallery.scrollWidth - gallery.clientWidth;
-        const scrollFraction = maxScroll > 0 ? gallery.scrollLeft / maxScroll : 0;
-        const activeIndex = Math.round(scrollFraction * (dots.length - 1));
-        dots.forEach((dot, index) => dot.classList.toggle('active', index === activeIndex));
-    });
-
     function calculateQuote() {
         let guests = document.getElementById('guests').value;
         let consumption = document.getElementById('eventType').value;
